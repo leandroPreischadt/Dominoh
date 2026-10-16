@@ -8,37 +8,19 @@ struct Peca
     int lado2;
 };
 
-Peca *criarPecas(int tamanhoVetor)
+Peca *criarPecas()
 {
+    int pecaIndex = 0;
 
-    Peca *pecas = new Peca[28];
+    Peca *pecas = new Peca[TAMPECAS];
 
-    int adicional = 0;
-    for (int i = 0; i < tamanhoVetor - 1; i++)
-    {
-        for (int k = 0; k < 6; k++)
-        {
-            if (i < 6)
-            {
-                Peca p;
-                p.lado1 = adicional;
-                p.lado2 = k;
-                pecas[i] = p;
-            }
-            if (i < 12)
-            {
-                Peca p;
-                p.lado1 = adicional + 1;
-                p.lado2 = k;
-                pecas[i] = p;
-            }
-
-            if (i < 17)
-            {
-                /* code */
-            }
-            
-            
+    for (int i=0; i <7; i++) {
+        for(int j=i; j<7; j++) {
+            Peca p;
+            p.lado1 = i;
+            p.lado2 = j;
+            pecas[pecaIndex] = p;
+            pecaIndex++;
         }
     }
     return pecas;
