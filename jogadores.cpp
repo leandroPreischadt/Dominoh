@@ -3,19 +3,28 @@
 
 string jogador1;
 
-bool verificarJogadores(int numJogadores) {
+int verificarJogadores(int numJogadores) {
 
     if (numJogadores < 2 || numJogadores > 4)
     {
         cout <<"O número de jogadores deve ser dois ou quatro jogadores!" << endl;
-        return true;
+        return 1;
     } 
-    else if (numJogadores==3)
+    if (numJogadores==3)
     {
         cout << "Não é possível jogar com três jogadores!" << endl;
-        return true;
+        return 1;
     }
-    return false;
+
+    if (numJogadores==2)
+    {
+        return numJogadores;
+    } else
+    {
+        return numJogadores;
+    }
+    
+    return 0;
 }
 
 Peca *montarMaoJogador(int quantidadePecas) {
@@ -29,4 +38,21 @@ Peca *montarMaoJogador(int quantidadePecas) {
     }
     
     return maoJogador;
+}
+
+string nomearJogador(int jogador1) {
+    string nome;
+
+    for (int i = 1; i < 5; i++)
+    {
+        if (jogador1 == i)
+        {
+            cout << "Digite o nome do jogador" << jogador1 <<": ";
+            cin >> nome;
+        }
+        
+        
+    }
+    
+    return nome;
 }

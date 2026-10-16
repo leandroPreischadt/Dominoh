@@ -8,23 +8,43 @@
 
 using namespace std;
 
-int main() {
-
+int main()
+{
     int numJogadores;
-    Peca *maoJogador1 = montarMaoJogador(QNTDPECAS);
+    string jogador1;
+    string jogador2;
+    string jogador3;
+    string jogador4;
 
-    char** tabuleiro = criar_tabuleiro(TAM);
-    mostrar_tabuleiro(tabuleiro, TAM);
-    
     cout << "Quantos pessoas irão jogar?: ";
     cin >> numJogadores;
+    int jogadoresVerificados = verificarJogadores(numJogadores);
 
-    bool jogadoresVerificados = verificarJogadores(numJogadores);
-
-    if (jogadoresVerificados)
+    if (jogadoresVerificados==1)
     {
         return 0;
     }
+
+    if (jogadoresVerificados == 2)
+    {
+        string jogador1 = nomearJogador(1);
+        string jogador2 = nomearJogador(2);
+    }
+    if (numJogadores == 4)
+    {
+        string jogador1 = nomearJogador(1);
+        string jogador2 = nomearJogador(2);
+        string jogador3 = nomearJogador(3);
+        string jogador4 = nomearJogador(4);
+    }
+
+    Peca *maoJogador1 = montarMaoJogador(QNTDPECAS);
+    Peca *maoJogador2 = montarMaoJogador(QNTDPECAS);
+    Peca *maoJogador3 = montarMaoJogador(QNTDPECAS);
+    Peca *maoJogador4 = montarMaoJogador(QNTDPECAS);
+
+    char **tabuleiro = criar_tabuleiro(TAM);
+    mostrar_tabuleiro(tabuleiro, TAM);
 
     return 0;
 }
