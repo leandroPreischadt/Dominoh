@@ -9,12 +9,8 @@ int main() {
 
     char** tabuleiro = criar_tabuleiro(TAM);
     mostrar_tabuleiro(tabuleiro, TAM);
-
     Peca *pecas = criarPecas();
+    
 
-    for (int i = 0; i < TAMPECAS - 1; i++)
-    {
-        cout << pecas[i].lado1 << "|" << pecas[i].lado2 << endl;
-    }
     return 0;
 }

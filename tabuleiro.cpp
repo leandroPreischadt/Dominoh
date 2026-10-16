@@ -31,3 +31,13 @@ void mostrar_tabuleiro(char **matriz, int tamanho)
         cout << endl;
     }
 }
+
+void limpar_tabueliro( char **matriz, int tamanho) {
+    for (int i = 0; i < tamanho; i++)
+    {
+        delete[] matriz[i];
+    }
+
+    delete[] matriz;
+    
+}
