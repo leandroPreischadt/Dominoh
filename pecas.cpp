@@ -1,4 +1,10 @@
 #include <iostream>
+#include <algorithm>
+#include <random>
+
+random_device rd;
+mt19937 gerador(rd());
+
 using namespace std;
 #define TAMPECAS 28
 
@@ -10,10 +16,12 @@ struct Peca
 
 Peca *criarPecas()
 {
+
     int pecaIndex = 0;
 
     Peca *pecas = new Peca[TAMPECAS];
 
+    
     for (int i=0; i <7; i++) {
         for(int j=i; j<7; j++) {
             Peca p;
@@ -23,5 +31,8 @@ Peca *criarPecas()
             pecaIndex++;
         }
     }
+    
+    shuffle(pecas, pecas + 28, gerador);
+
     return pecas;
 }
