@@ -7,6 +7,7 @@ mt19937 gerador(rd());
 
 using namespace std;
 #define TAMPECAS 28
+#define MONTANTE 14
 
 struct Peca
 {
@@ -35,4 +36,17 @@ Peca *criarPecas()
     shuffle(pecas, pecas + 28, gerador);
 
     return pecas;
+}
+
+Peca *criarMontante(Peca *pecas) {
+    Peca *montante = new Peca[MONTANTE];
+    int start = MONTANTE;
+
+    for (int i = start; i < TAMPECAS; i++)
+    {
+        montante[i] = pecas[i];
+    }
+    
+
+    return montante;
 }

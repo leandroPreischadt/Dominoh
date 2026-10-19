@@ -29,21 +29,20 @@ int verificarJogadores(int numJogadores)
     return 0;
 }
 
-Peca *pecas = criarPecas();
-
-
-Peca *montarMaoJogador(int numJogador,int numPecas)
+Peca *montarMaoJogador(int numJogador, int numPecas, int numJogadores)
 {
+
+    Peca *pecas = criarPecas();
+
     Peca *maoJogador = new Peca[7];
 
     int start = (numJogador - 1) * 7;
-    
+
     for (int i = 0; i < 7; i++)
     {
-        maoJogador[i] = pecas[start + i];
-        start++;
+            maoJogador[i] = pecas[start + i];
+            start++;
     }
-    
 
     return maoJogador;
 }
