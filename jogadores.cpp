@@ -35,29 +35,14 @@ Peca *pecas = criarPecas();
 Peca *montarMaoJogador(int numJogador,int numPecas)
 {
     Peca *maoJogador = new Peca[7];
-    int start=0;
 
-    if (numJogador==2)
-    {
-        start = numPecas - (numPecas-7);
-    }
-    else if (numJogador==3)
-    {
-        start= numPecas - (numPecas-14);
-    }
-    else if (numJogador==4)
-    {
-        start= numPecas - (numPecas - 21);
-    }
-    
+    int start = (numJogador - 1) * 7;
     
     for (int i = 0; i < 7; i++)
     {
-        maoJogador[i] = pecas[start];
+        maoJogador[i] = pecas[start + i];
         start++;
     }
-    
-    
     
 
     return maoJogador;
