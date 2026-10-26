@@ -8,6 +8,7 @@ mt19937 gerador(rd());
 
 #define TAMPECAS 28
 #define MONTANTE 14
+#define PECASPORMAO 7
 
 struct Peca
 {

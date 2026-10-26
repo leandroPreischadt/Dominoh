@@ -2,7 +2,8 @@
 #include "pecas.cpp"
 #include <string>
 
-struct Jogador {
+struct Jogador
+{
     string nome;
     Peca *maoJogador;
     int pontos;
@@ -57,20 +58,43 @@ Peca *montarMaoJogador(int numJogador, int numPecas)
     return maoJogador;
 }
 
-
-Peca *verificarQuemComeca(int numJogadores, Jogador jogador)
+Jogador verificarQuemComeca(int numJogadores, Jogador jogador1, Jogador jogador2, Jogador jogador3, Jogador jogador4)
 {
 
-//    Peca *jogadores[4] = {maoJgador1, maoJgador2, maoJgador3, maoJgador4};
-    
+    Jogador jogadores[4] = {jogador1, jogador2, jogador3, jogador4};
 
-   for (int i = 0; i < TAMPECAS - 1; i++)
-   {
+    if (numJogadores >= 2)
+    {
+        if (numJogadores == 4)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 0; i < PECASPORMAO - 1; i++)
+                {
+                    if (jogadores[i].maoJogador[i].lado1 == 6 && jogadores[i].maoJogador[i].lado2 == 6)
+                    {
+                        return jogadores[i];
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                for (int i = 0; i < PECASPORMAO - 1; i++)
+                {
+                    if (jogadores[j].maoJogador[i].lado1 + jogadores[j].maoJogador[i].lado2 > jogadores[j + 1].maoJogador[i].lado1 + jogadores[j + 1].maoJogador[1].lado2 || jogadores[j].maoJogador[i].lado1 + jogadores[j].maoJogador[i].lado2 > jogadores[j - j].maoJogador[i].lado1 + jogadores[j - j].maoJogador[i].lado1)
+                    {
+                        return jogadores[j];
+                    }
+                }
+            }
+        }
+    }
 
-   }
-   
+    return jogador1;
 }
-
 
 string nomearJogador(int jogador1)
 {
@@ -87,4 +111,3 @@ string nomearJogador(int jogador1)
 
     return nome;
 }
-

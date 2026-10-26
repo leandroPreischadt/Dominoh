@@ -1,9 +1,8 @@
 #include <iostream>
 #include "jogadores.cpp"
 
-#define TAM 25
 #define TAMPECAS 28
-#define PECASPORMAO 7
+
 
 using namespace std;
 
@@ -35,6 +34,8 @@ int main()
     jogador2.maoJogador = montarMaoJogador(2, TAMPECAS);
     jogador3.maoJogador = montarMaoJogador(3, TAMPECAS);
     jogador4.maoJogador = montarMaoJogador(4, TAMPECAS);
+
+    Jogador jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
 
     // while (true)
     // {
