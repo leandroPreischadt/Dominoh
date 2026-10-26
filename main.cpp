@@ -1,5 +1,4 @@
 #include <iostream>
-#include "tabuleiro.cpp"
 #include "jogadores.cpp"
 
 #define TAM 25
@@ -41,8 +40,6 @@ int main()
     Peca *maoJogador3 = montarMaoJogador(3, TAMPECAS, numJogadores);
     Peca *maoJogador4 = montarMaoJogador(4, TAMPECAS, numJogadores);
 
-    char **tabuleiro = criar_tabuleiro(TAM);
-    mostrar_tabuleiro(tabuleiro, TAM);
 
     // while (true)
     // {

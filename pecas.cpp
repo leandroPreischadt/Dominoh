@@ -1,11 +1,11 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+using namespace std;
 
 random_device rd;
 mt19937 gerador(rd());
 
-using namespace std;
 #define TAMPECAS 28
 #define MONTANTE 14
 

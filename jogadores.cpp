@@ -1,5 +1,6 @@
 #include <iostream>
 #include "pecas.cpp"
+#include <string>
 
 string jogador1;
 
@@ -40,12 +41,27 @@ Peca *montarMaoJogador(int numJogador, int numPecas, int numJogadores)
 
     for (int i = 0; i < 7; i++)
     {
-            maoJogador[i] = pecas[start + i];
-            start++;
+        maoJogador[i] = pecas[start + i];
+        start++;
     }
 
     return maoJogador;
 }
+
+/*
+Peca *verificarQuemComeca(int numJogadores, Peca *maoJgador1, Peca *maoJgador2, Peca *maoJgador3, Peca *maoJgador4)
+{
+
+   Peca *jogadores[4] = {maoJgador1, maoJgador2, maoJgador3, maoJgador4};
+    
+
+   for (int i = 0; i < TAMPECAS - 1; i++)
+   {
+
+   }
+   
+}
+*/
 
 string nomearJogador(int jogador1)
 {
@@ -62,3 +78,9 @@ string nomearJogador(int jogador1)
 
     return nome;
 }
+
+struct Jogador {
+    string nome;
+    Peca *maoJogador;
+    int pontos;
+};
