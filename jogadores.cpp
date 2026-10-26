@@ -2,7 +2,16 @@
 #include "pecas.cpp"
 #include <string>
 
-string jogador1;
+struct Jogador {
+    string nome;
+    Peca *maoJogador;
+    int pontos;
+};
+
+Jogador jogador1;
+Jogador jogador2;
+Jogador jogador3;
+Jogador jogador4;
 
 int verificarJogadores(int numJogadores)
 {
@@ -30,7 +39,7 @@ int verificarJogadores(int numJogadores)
     return 0;
 }
 
-Peca *montarMaoJogador(int numJogador, int numPecas, int numJogadores)
+Peca *montarMaoJogador(int numJogador, int numPecas)
 {
 
     Peca *pecas = criarPecas();
@@ -48,11 +57,11 @@ Peca *montarMaoJogador(int numJogador, int numPecas, int numJogadores)
     return maoJogador;
 }
 
-/*
-Peca *verificarQuemComeca(int numJogadores, Peca *maoJgador1, Peca *maoJgador2, Peca *maoJgador3, Peca *maoJgador4)
+
+Peca *verificarQuemComeca(int numJogadores, Jogador jogador)
 {
 
-   Peca *jogadores[4] = {maoJgador1, maoJgador2, maoJgador3, maoJgador4};
+//    Peca *jogadores[4] = {maoJgador1, maoJgador2, maoJgador3, maoJgador4};
     
 
    for (int i = 0; i < TAMPECAS - 1; i++)
@@ -61,7 +70,7 @@ Peca *verificarQuemComeca(int numJogadores, Peca *maoJgador1, Peca *maoJgador2, 
    }
    
 }
-*/
+
 
 string nomearJogador(int jogador1)
 {
@@ -79,8 +88,3 @@ string nomearJogador(int jogador1)
     return nome;
 }
 
-struct Jogador {
-    string nome;
-    Peca *maoJogador;
-    int pontos;
-};
