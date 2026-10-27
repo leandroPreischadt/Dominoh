@@ -30,17 +30,19 @@ int main()
         }
     }
 
-    jogador1.maoJogador = montarMaoJogador(1, TAMPECAS);
-    jogador2.maoJogador = montarMaoJogador(2, TAMPECAS);
-    jogador3.maoJogador = montarMaoJogador(3, TAMPECAS);
-    jogador4.maoJogador = montarMaoJogador(4, TAMPECAS);
+    jogador1.maoJogador = montarMaoJogador(1, TAMPECAS, jogador1);
+    jogador2.maoJogador = montarMaoJogador(2, TAMPECAS, jogador2);
+    jogador3.maoJogador = montarMaoJogador(3, TAMPECAS, jogador3);
+    jogador4.maoJogador = montarMaoJogador(4, TAMPECAS, jogador4);
 
     Jogador jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
 
     cout << "O jogador que começa é o " << jogadorQueComeca.nome << endl;
     
-    Peca maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca);
+    Peca maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca, jogadorQueComeca.quantidadeDePecas);
     cout << "Peça escolhida: " << maoJogadorQueComeca.lado1 << "|" << maoJogadorQueComeca.lado2 << endl;
+
+    maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca, jogadorQueComeca.quantidadeDePecas);    
 
     // while (true)
     // {

@@ -6,7 +6,7 @@ struct Jogador
 {
     string nome;
     Peca *maoJogador;
-    int pontos;
+    int quantidadeDePecas;
 };
 
 Jogador jogador1;
@@ -42,8 +42,10 @@ int verificarJogadores(int numJogadores)
 
 Peca *pecas = criarPecas();
 
-Peca *montarMaoJogador(int numJogador, int numPecas)
+Peca *montarMaoJogador(int numJogador, int numPecas, Jogador &jogador)
 {
+
+    jogador.quantidadeDePecas = PECASPORMAO;
 
     Peca *maoJogador = new Peca[7];
 
@@ -128,12 +130,13 @@ string nomearJogador(int jogador1)
     return nome;
 }
 
-Peca escolherPecaMao(Jogador jogador)
+Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
 {
     while (true)
     {
         int escolha;
-        for (int i = 0; i < PECASPORMAO; i++)
+        
+        for (int i = 0; i < quantidadePecas; i++)
         {
             cout << "(" << i + 1 << ") " << jogador.maoJogador[i].lado1 << "|" << jogador.maoJogador[i].lado2 << " ";
         }
@@ -141,9 +144,19 @@ Peca escolherPecaMao(Jogador jogador)
         cout << "Escolha uma peça: ";
         cin >> escolha;
 
-        if (escolha >= 1 && escolha <= PECASPORMAO)
+        if (escolha >= 1 && escolha <= quantidadePecas)
         {
-            return jogador.maoJogador[escolha - 1];
+            int indice = escolha - 1;
+            Peca pecaEscolhida = jogador.maoJogador[indice];
+
+            for (int i = indice; i < quantidadePecas - 1; i++)
+            {
+                jogador.maoJogador[i] = jogador.maoJogador[i + 1];
+            }
+
+            jogador.quantidadeDePecas--;
+
+            return pecaEscolhida;
         }
         
         cout << "Escolha inválida!" << endl;
