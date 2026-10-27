@@ -37,6 +37,9 @@ int main()
 
     Jogador jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
 
+    cout << "O jogador que começa é o " << jogadorQueComeca.nome << endl;
+    
+
     // while (true)
     // {
     //

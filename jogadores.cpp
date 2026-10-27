@@ -58,6 +58,32 @@ Peca *montarMaoJogador(int numJogador, int numPecas)
     return maoJogador;
 }
 
+Jogador verificarMaiorMao(Jogador jogador1, Jogador jogador2)
+{
+    int maior1 = 0;
+    int maior2 = 0;
+
+    for (int i = 0; i < PECASPORMAO; i++)
+    {
+        if (jogador1.maoJogador[i].lado1 + jogador1.maoJogador[i].lado2 > maior1)
+        {
+            maior1 = jogador1.maoJogador[i].lado1 + jogador1.maoJogador[i].lado2;
+        }
+
+        if (jogador2.maoJogador[i].lado1 + jogador2.maoJogador[i].lado2 > maior2)
+        {
+            maior2 = jogador2.maoJogador[i].lado1 + jogador2.maoJogador[i].lado2;
+        }
+    }
+
+    if (maior2 > maior1)
+    {
+        return jogador2;
+    }
+
+    return jogador1;
+}
+
 Jogador verificarQuemComeca(int numJogadores, Jogador jogador1, Jogador jogador2, Jogador jogador3, Jogador jogador4)
 {
 
@@ -69,27 +95,18 @@ Jogador verificarQuemComeca(int numJogadores, Jogador jogador1, Jogador jogador2
         {
             for (int j = 0; j < 4; j++)
             {
-                for (int i = 0; i < PECASPORMAO - 1; i++)
+                for (int i = 0; i < PECASPORMAO; i++)
                 {
-                    if (jogadores[i].maoJogador[i].lado1 == 6 && jogadores[i].maoJogador[i].lado2 == 6)
+                    if (jogadores[j].maoJogador[i].lado1 == 6 && jogadores[j].maoJogador[i].lado2 == 6)
                     {
-                        return jogadores[i];
+                        return jogadores[j];
                     }
                 }
             }
         }
         else
         {
-            for (int j = 0; j < 2; j++)
-            {
-                for (int i = 0; i < PECASPORMAO - 1; i++)
-                {
-                    if (jogadores[j].maoJogador[i].lado1 + jogadores[j].maoJogador[i].lado2 > jogadores[j + 1].maoJogador[i].lado1 + jogadores[j + 1].maoJogador[1].lado2 || jogadores[j].maoJogador[i].lado1 + jogadores[j].maoJogador[i].lado2 > jogadores[j - j].maoJogador[i].lado1 + jogadores[j - j].maoJogador[i].lado1)
-                    {
-                        return jogadores[j];
-                    }
-                }
-            }
+            return verificarMaiorMao(jogador1, jogador2);
         }
     }
 
