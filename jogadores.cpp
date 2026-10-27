@@ -40,10 +40,10 @@ int verificarJogadores(int numJogadores)
     return 0;
 }
 
+Peca *pecas = criarPecas();
+
 Peca *montarMaoJogador(int numJogador, int numPecas)
 {
-
-    Peca *pecas = criarPecas();
 
     Peca *maoJogador = new Peca[7];
 
@@ -52,7 +52,6 @@ Peca *montarMaoJogador(int numJogador, int numPecas)
     for (int i = 0; i < 7; i++)
     {
         maoJogador[i] = pecas[start + i];
-        start++;
     }
 
     return maoJogador;
@@ -127,4 +126,26 @@ string nomearJogador(int jogador1)
     }
 
     return nome;
+}
+
+Peca escolherPecaMao(Jogador jogador)
+{
+    while (true)
+    {
+        int escolha;
+        for (int i = 0; i < PECASPORMAO; i++)
+        {
+            cout << "(" << i + 1 << ") " << jogador.maoJogador[i].lado1 << "|" << jogador.maoJogador[i].lado2 << " ";
+        }
+        cout << endl;
+        cout << "Escolha uma peça: ";
+        cin >> escolha;
+
+        if (escolha >= 1 && escolha <= PECASPORMAO)
+        {
+            return jogador.maoJogador[escolha - 1];
+        }
+        
+        cout << "Escolha inválida!" << endl;
+    }
 }

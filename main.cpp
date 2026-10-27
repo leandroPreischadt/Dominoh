@@ -39,6 +39,8 @@ int main()
 
     cout << "O jogador que começa é o " << jogadorQueComeca.nome << endl;
     
+    Peca maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca);
+    cout << "Peça escolhida: " << maoJogadorQueComeca.lado1 << "|" << maoJogadorQueComeca.lado2 << endl;
 
     // while (true)
     // {
