@@ -38,15 +38,33 @@ int main()
     Jogador jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
 
     cout << "O jogador que começa é o " << jogadorQueComeca.nome << endl;
+    /*
+    1- implementar quando são 2 jogadores ou 4
+    2- algortirmo para os próximos jogadores jogarem suas peças
+    3- para 2 jogadores implementar montante e crir lógica de comprar peça
+    4- exibir o tabuleiro na mesa com listas encadeadas
+    5- criar logica de quem vai vencer (quem acaba com todas as peças primeiro)
+    */
+
+    Peca maoJogadorQueComeca;
+
+    while (true)
+    {
     
-    Peca maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca, jogadorQueComeca.quantidadeDePecas);
-    cout << "Peça escolhida: " << maoJogadorQueComeca.lado1 << "|" << maoJogadorQueComeca.lado2 << endl;
+        if (numJogadores >= 2)
+        {
+            //para os dois jogadores
 
-    maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca, jogadorQueComeca.quantidadeDePecas);    
+            // maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca, jogadorQueComeca.quantidadeDePecas);
 
-    // while (true)
-    // {
-    //
-    // }
+            if (numJogadores ==4)
+            {
+                // Para 4 jogadores, colocar as mãons dos outros dois jogadores que faltam
+            }
+            
+        }
+        
+
+    }
     return 0;
 }
