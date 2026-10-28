@@ -3,7 +3,6 @@
 
 #define TAMPECAS 28
 
-
 using namespace std;
 
 int main()
@@ -35,36 +34,39 @@ int main()
     jogador3.maoJogador = montarMaoJogador(3, TAMPECAS, jogador3);
     jogador4.maoJogador = montarMaoJogador(4, TAMPECAS, jogador4);
 
-    Jogador jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
+    Jogador &jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
 
-    cout << "O jogador que começa é o " << jogadorQueComeca.nome << endl;
     /*
-    1- implementar quando são 2 jogadores ou 4
-    2- algortirmo para os próximos jogadores jogarem suas peças
     3- para 2 jogadores implementar montante e crir lógica de comprar peça
     4- exibir o tabuleiro na mesa com listas encadeadas
     5- criar logica de quem vai vencer (quem acaba com todas as peças primeiro)
     */
 
     Peca maoJogadorQueComeca;
+    Jogador *jogadorDaVez = &jogadorQueComeca;
 
     while (true)
     {
-    
-        if (numJogadores >= 2)
+
+        cout << "Jogador da vez: " <<jogadorDaVez->nome << endl;
+
+        maoJogadorQueComeca = escolherPecaMao(*jogadorDaVez, jogadorDaVez->quantidadeDePecas);
+
+        if (jogadorDaVez == &jogador1 && numJogadores >= 2)
         {
-            //para os dois jogadores
-
-            // maoJogadorQueComeca = escolherPecaMao(jogadorQueComeca, jogadorQueComeca.quantidadeDePecas);
-
-            if (numJogadores ==4)
-            {
-                // Para 4 jogadores, colocar as mãons dos outros dois jogadores que faltam
-            }
-            
+            jogadorDaVez = &jogador2;
+        }
+        else if (jogadorDaVez == &jogador2 && numJogadores==4)
+        {
+            jogadorDaVez = &jogador3;
+        }
+        else if (jogadorDaVez == &jogador3 && numJogadores ==4)
+        {
+            jogadorDaVez = &jogador4;
+        } else {
+            jogadorDaVez = &jogador1;
         }
         
-
     }
     return 0;
 }

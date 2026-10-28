@@ -7,6 +7,7 @@ struct Jogador
     string nome;
     Peca *maoJogador;
     int quantidadeDePecas;
+    Peca pecaEscolhida;
 };
 
 Jogador jogador1;
@@ -59,7 +60,7 @@ Peca *montarMaoJogador(int numJogador, int numPecas, Jogador &jogador)
     return maoJogador;
 }
 
-Jogador verificarMaiorMao(Jogador jogador1, Jogador jogador2)
+Jogador& verificarMaiorMao(Jogador &jogador1, Jogador &jogador2)
 {
     int maior1 = 0;
     int maior2 = 0;
@@ -85,10 +86,10 @@ Jogador verificarMaiorMao(Jogador jogador1, Jogador jogador2)
     return jogador1;
 }
 
-Jogador verificarQuemComeca(int numJogadores, Jogador jogador1, Jogador jogador2, Jogador jogador3, Jogador jogador4)
+Jogador& verificarQuemComeca(int numJogadores, Jogador &jogador1, Jogador &jogador2, Jogador &jogador3, Jogador &jogador4)
 {
 
-    Jogador jogadores[4] = {jogador1, jogador2, jogador3, jogador4};
+    Jogador *jogadores[4] = {&jogador1, &jogador2, &jogador3, &jogador4};
 
     if (numJogadores >= 2)
     {
@@ -98,9 +99,9 @@ Jogador verificarQuemComeca(int numJogadores, Jogador jogador1, Jogador jogador2
             {
                 for (int i = 0; i < PECASPORMAO; i++)
                 {
-                    if (jogadores[j].maoJogador[i].lado1 == 6 && jogadores[j].maoJogador[i].lado2 == 6)
+                    if (jogadores[j]->maoJogador[i].lado1 == 6 && jogadores[j]->maoJogador[i].lado2 == 6)
                     {
-                        return jogadores[j];
+                        return *jogadores[j];
                     }
                 }
             }
@@ -135,7 +136,7 @@ Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
     while (true)
     {
         int escolha;
-        
+
         for (int i = 0; i < quantidadePecas; i++)
         {
             cout << "(" << i + 1 << ") " << jogador.maoJogador[i].lado1 << "|" << jogador.maoJogador[i].lado2 << " ";
@@ -158,7 +159,18 @@ Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
 
             return pecaEscolhida;
         }
-        
+
         cout << "Escolha inválida!" << endl;
     }
+}
+
+Jogador& VezJogador(Jogador &jogadorQueComeca, Jogador &jogador)
+{
+    if (jogadorQueComeca.nome == jogador.nome)
+    {
+        cout << "jogador: " << jogadorQueComeca.nome << endl;
+        return jogadorQueComeca;
+    }
+    cout << "Jogador: " << jogador.nome << endl;
+    return jogador;
 }
