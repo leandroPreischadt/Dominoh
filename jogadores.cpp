@@ -42,6 +42,7 @@ int verificarJogadores(int numJogadores)
 }
 
 Peca *pecas = criarPecas();
+Peca *montante = criarMontante(pecas);
 
 Peca *montarMaoJogador(int numJogador, int numPecas, Jogador &jogador)
 {
@@ -60,7 +61,7 @@ Peca *montarMaoJogador(int numJogador, int numPecas, Jogador &jogador)
     return maoJogador;
 }
 
-Jogador& verificarMaiorMao(Jogador &jogador1, Jogador &jogador2)
+Jogador &verificarMaiorMao(Jogador &jogador1, Jogador &jogador2)
 {
     int maior1 = 0;
     int maior2 = 0;
@@ -86,7 +87,7 @@ Jogador& verificarMaiorMao(Jogador &jogador1, Jogador &jogador2)
     return jogador1;
 }
 
-Jogador& verificarQuemComeca(int numJogadores, Jogador &jogador1, Jogador &jogador2, Jogador &jogador3, Jogador &jogador4)
+Jogador &verificarQuemComeca(int numJogadores, Jogador &jogador1, Jogador &jogador2, Jogador &jogador3, Jogador &jogador4)
 {
 
     Jogador *jogadores[4] = {&jogador1, &jogador2, &jogador3, &jogador4};
@@ -133,6 +134,7 @@ string nomearJogador(int jogador1)
 
 Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
 {
+
     while (true)
     {
         int escolha;
@@ -164,7 +166,7 @@ Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
     }
 }
 
-Jogador& VezJogador(Jogador &jogadorQueComeca, Jogador &jogador)
+Jogador &VezJogador(Jogador &jogadorQueComeca, Jogador &jogador)
 {
     if (jogadorQueComeca.nome == jogador.nome)
     {

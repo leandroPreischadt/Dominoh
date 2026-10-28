@@ -1,5 +1,6 @@
 #include <iostream>
 #include "jogadores.cpp"
+#include <stdlib.h>
 
 #define TAMPECAS 28
 
@@ -42,7 +43,7 @@ int main()
     5- criar logica de quem vai vencer (quem acaba com todas as peças primeiro)
     */
 
-    Peca maoJogadorQueComeca;
+    Peca maoJogadorDaVez;
     Jogador *jogadorDaVez = &jogadorQueComeca;
 
     while (true)
@@ -50,7 +51,7 @@ int main()
 
         cout << "Jogador da vez: " <<jogadorDaVez->nome << endl;
 
-        maoJogadorQueComeca = escolherPecaMao(*jogadorDaVez, jogadorDaVez->quantidadeDePecas);
+        maoJogadorDaVez = escolherPecaMao(*jogadorDaVez, jogadorDaVez->quantidadeDePecas);
 
         if (jogadorDaVez == &jogador1 && numJogadores >= 2)
         {
