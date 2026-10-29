@@ -2,8 +2,6 @@
 #include "jogadores.cpp"
 #include <stdlib.h>
 
-#define TAMPECAS 28
-
 using namespace std;
 
 int main()
@@ -19,6 +17,12 @@ int main()
         return 0;
     }
 
+    // Com quatro jogadores, todas as 28 peças já foram distribuídas.
+    if (numJogadores == 4)
+    {
+        montante.quantidade = 0;
+    }
+
     if (jogadoresVerificados >= 2)
     {
         jogador1.nome = nomearJogador(1);
@@ -30,10 +34,10 @@ int main()
         }
     }
 
-    jogador1.maoJogador = montarMaoJogador(1, TAMPECAS, jogador1);
-    jogador2.maoJogador = montarMaoJogador(2, TAMPECAS, jogador2);
-    jogador3.maoJogador = montarMaoJogador(3, TAMPECAS, jogador3);
-    jogador4.maoJogador = montarMaoJogador(4, TAMPECAS, jogador4);
+    jogador1.maoJogador = montarMaoJogador(1, jogador1);
+    jogador2.maoJogador = montarMaoJogador(2, jogador2);
+    jogador3.maoJogador = montarMaoJogador(3, jogador3);
+    jogador4.maoJogador = montarMaoJogador(4, jogador4);
 
     Jogador &jogadorQueComeca = verificarQuemComeca(numJogadores, jogador1, jogador2, jogador3, jogador4);
 
@@ -43,37 +47,58 @@ int main()
     5- criar logica de quem vai vencer (quem acaba com todas as peças primeiro)
     */
 
-    Peca maoJogadorDaVez;
+    Peca pecaEscolhida;
     Jogador *jogadorDaVez = &jogadorQueComeca;
-    Mesa mesa = criarMesa();
+    Jogador *vencedor = nullptr;
 
     while (true)
     {
+        if (verificarEmpate(numJogadores, mesa, montante))
+        {
+            vencedor = verificarVencedorPorSoma(numJogadores);
+            break;
+        }
+
+        if (montante.indiceAtual >= montante.quantidade &&
+            !jogadorTemPecaJogavel(*jogadorDaVez, mesa))
+        {
+            jogadorDaVez = proximoJogador(jogadorDaVez, numJogadores);
+            continue;
+        }
 
         cout << "Jogador da vez: " <<jogadorDaVez->nome << endl;
 
-        maoJogadorDaVez = escolherPecaMao(*jogadorDaVez, jogadorDaVez->quantidadeDePecas);
+        pecaEscolhida = escolherPecaMao(*jogadorDaVez, jogadorDaVez->quantidadeDePecas, mesa, montante);
+        if (!montante.foiComprada)
+        {
+            InserirNaMesa(mesa, pecaEscolhida);
+        }
 
-        InserirNaMesa(mesa, maoJogadorDaVez);
         cout << "mesa:";
         exibirMesa(mesa);
         cout << endl;
 
-        if (jogadorDaVez == &jogador1 && numJogadores >= 2)
+        if (jogadorVencedor(jogadorDaVez))
         {
-            jogadorDaVez = &jogador2;
+            vencedor = jogadorDaVez;
+            break;
         }
-        else if (jogadorDaVez == &jogador2 && numJogadores==4)
-        {
-            jogadorDaVez = &jogador3;
-        }
-        else if (jogadorDaVez == &jogador3 && numJogadores ==4)
-        {
-            jogadorDaVez = &jogador4;
-        } else {
-            jogadorDaVez = &jogador1;
-        }
+
+        jogadorDaVez = proximoJogador(jogadorDaVez, numJogadores);
         
     }
+
+    cout << endl;
+
+    if (vencedor == nullptr)
+    {
+        cout << "A partida terminou empatada." << endl;
+    }
+    else
+    {
+        cout << "O vencedor é " << vencedor->nome << endl;
+        cout << "Soma das peças: " << somarPecasJogador(*vencedor);
+    }
+
     return 0;
 }

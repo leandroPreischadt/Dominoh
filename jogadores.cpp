@@ -6,7 +6,7 @@ struct Jogador
 {
     string nome;
     Peca *maoJogador;
-    int quantidadeDePecas;
+    int quantidadeDePecas = 7;
     Peca pecaEscolhida;
 };
 
@@ -17,43 +17,34 @@ Jogador jogador4;
 
 int verificarJogadores(int numJogadores)
 {
-
     if (numJogadores < 2 || numJogadores > 4)
     {
         cout << "O número de jogadores deve ser dois ou quatro jogadores!" << endl;
         return 1;
     }
+
     if (numJogadores == 3)
     {
         cout << "Não é possível jogar com três jogadores!" << endl;
         return 1;
     }
 
-    if (numJogadores == 2)
-    {
-        return numJogadores;
-    }
-    else
-    {
-        return numJogadores;
-    }
-
-    return 0;
+    return numJogadores;
 }
 
 Peca *pecas = criarPecas();
-Peca *montante = criarMontante(pecas);
+Montante montante = criarMontante(pecas);
+Mesa mesa = criarMesa();
 
-Peca *montarMaoJogador(int numJogador, int numPecas, Jogador &jogador)
+Peca *montarMaoJogador(int numJogador, Jogador &jogador)
 {
-
     jogador.quantidadeDePecas = PECASPORMAO;
 
-    Peca *maoJogador = new Peca[7];
+    // A mão pode crescer quando o jogador compra peças do montante.
+    Peca *maoJogador = new Peca[TAMPECAS];
+    int start = (numJogador - 1) * PECASPORMAO;
 
-    int start = (numJogador - 1) * 7;
-
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < PECASPORMAO; i++)
     {
         maoJogador[i] = pecas[start + i];
     }
@@ -89,51 +80,40 @@ Jogador &verificarMaiorMao(Jogador &jogador1, Jogador &jogador2)
 
 Jogador &verificarQuemComeca(int numJogadores, Jogador &jogador1, Jogador &jogador2, Jogador &jogador3, Jogador &jogador4)
 {
-
     Jogador *jogadores[4] = {&jogador1, &jogador2, &jogador3, &jogador4};
 
-    if (numJogadores >= 2)
+    if (numJogadores == 4)
     {
-        if (numJogadores == 4)
+        for (int j = 0; j < 4; j++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int i = 0; i < PECASPORMAO; i++)
             {
-                for (int i = 0; i < PECASPORMAO; i++)
+                if (jogadores[j]->maoJogador[i].lado1 == 6 && jogadores[j]->maoJogador[i].lado2 == 6)
                 {
-                    if (jogadores[j]->maoJogador[i].lado1 == 6 && jogadores[j]->maoJogador[i].lado2 == 6)
-                    {
-                        return *jogadores[j];
-                    }
+                    return *jogadores[j];
                 }
             }
         }
-        else
-        {
-            return verificarMaiorMao(jogador1, jogador2);
-        }
+    }
+    else if (numJogadores == 2)
+    {
+        return verificarMaiorMao(jogador1, jogador2);
     }
 
     return jogador1;
 }
 
-string nomearJogador(int jogador1)
+string nomearJogador(int numeroJogador)
 {
     string nome;
-
-    for (int i = 1; i < 5; i++)
-    {
-        if (jogador1 == i)
-        {
-            cout << "Digite o nome do jogador" << jogador1 << ": ";
-            cin >> nome;
-        }
-    }
-
+    cout << "Digite o nome do jogador" << numeroJogador << ": ";
+    cin >> nome;
     return nome;
 }
 
-Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
+Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas, Mesa &mesa, Montante &montante)
 {
+    montante.foiComprada = false;
 
     while (true)
     {
@@ -141,38 +121,146 @@ Peca escolherPecaMao(Jogador &jogador, int &quantidadePecas)
 
         for (int i = 0; i < quantidadePecas; i++)
         {
-            cout << "(" << i + 1 << ") " << jogador.maoJogador[i].lado1 << "|" << jogador.maoJogador[i].lado2 << " ";
+            cout << "(" << i + 1 << ") " << "[" << jogador.maoJogador[i].lado1 << "|" << jogador.maoJogador[i].lado2 << "]" << " ";
         }
         cout << endl;
         cout << "Escolha uma peça: ";
         cin >> escolha;
 
-        if (escolha >= 1 && escolha <= quantidadePecas)
+        if (escolha < 1 || escolha > quantidadePecas)
         {
-            int indice = escolha - 1;
-            Peca pecaEscolhida = jogador.maoJogador[indice];
-
-            for (int i = indice; i < quantidadePecas - 1; i++)
-            {
-                jogador.maoJogador[i] = jogador.maoJogador[i + 1];
-            }
-
-            jogador.quantidadeDePecas--;
-
-            return pecaEscolhida;
+            cout << "Escolha inválida!" << endl;
+            continue;
         }
 
-        cout << "Escolha inválida!" << endl;
+        int indice = escolha - 1;
+        Peca pecaEscolhida = jogador.maoJogador[indice];
+
+        if (!podeInserirNaMesa(pecaEscolhida, mesa))
+        {
+            Peca pecaComprada;
+
+            if (comprarMontante(montante, pecaComprada))
+            {
+                jogador.quantidadeDePecas++;
+                jogador.maoJogador[quantidadePecas - 1] = pecaComprada;
+                cout << "Peça comprada do montante." << endl;
+                return pecaComprada;
+            }
+
+            cout << "O montante está vazio. Escolha uma peça válida." << endl;
+            continue;
+        }
+
+        for (int i = indice; i < quantidadePecas - 1; i++)
+        {
+            jogador.maoJogador[i] = jogador.maoJogador[i + 1];
+        }
+
+        jogador.quantidadeDePecas--;
+        return pecaEscolhida;
     }
 }
 
-Jogador &VezJogador(Jogador &jogadorQueComeca, Jogador &jogador)
+bool jogadorTemPecaJogavel(const Jogador &jogador, const Mesa &mesa)
 {
-    if (jogadorQueComeca.nome == jogador.nome)
+    for (int i = 0; i < jogador.quantidadeDePecas; i++)
     {
-        cout << "jogador: " << jogadorQueComeca.nome << endl;
-        return jogadorQueComeca;
+        if (podeInserirNaMesa(jogador.maoJogador[i], mesa))
+        {
+            return true;
+        }
     }
-    cout << "Jogador: " << jogador.nome << endl;
-    return jogador;
+
+    return false;
+}
+
+bool verificarEmpate(int numJogadores, const Mesa &mesa, const Montante &montante)
+{
+    if (montante.indiceAtual < montante.quantidade)
+    {
+        return false;
+    }
+
+    Jogador *jogadores[4] = {&jogador1, &jogador2, &jogador3, &jogador4};
+    int quantidadeJogadores = numJogadores == 4 ? 4 : 2;
+
+    for (int i = 0; i < quantidadeJogadores; i++)
+    {
+        if (jogadorTemPecaJogavel(*jogadores[i], mesa))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int somarPecasJogador(const Jogador &jogador)
+{
+    int soma = 0;
+
+    for (int i = 0; i < jogador.quantidadeDePecas; i++)
+    {
+        soma += jogador.maoJogador[i].lado1 + jogador.maoJogador[i].lado2;
+    }
+
+    return soma;
+}
+
+Jogador *verificarVencedorPorSoma(int numJogadores)
+{
+    Jogador *jogadores[4] = {&jogador1, &jogador2, &jogador3, &jogador4};
+    int quantidadeJogadores = numJogadores == 4 ? 4 : 2;
+    int maiorSoma = -1;
+    Jogador *vencedor = nullptr;
+    bool houveEmpate = false;
+
+    for (int i = 0; i < quantidadeJogadores; i++)
+    {
+        int somaAtual = somarPecasJogador(*jogadores[i]);
+
+        if (somaAtual > maiorSoma)
+        {
+            maiorSoma = somaAtual;
+            vencedor = jogadores[i];
+            houveEmpate = false;
+        }
+        else if (somaAtual == maiorSoma)
+        {
+            houveEmpate = true;
+        }
+    }
+
+    if (houveEmpate)
+    {
+        return nullptr;
+    }
+
+    return vencedor;
+}
+
+Jogador *proximoJogador(Jogador *jogadorDaVez, int numJogadores)
+{
+    if (jogadorDaVez == &jogador1)
+    {
+        return &jogador2;
+    }
+
+    if (jogadorDaVez == &jogador2 && numJogadores == 4)
+    {
+        return &jogador3;
+    }
+
+    if (jogadorDaVez == &jogador3 && numJogadores == 4)
+    {
+        return &jogador4;
+    }
+
+    return &jogador1;
+}
+
+bool jogadorVencedor(Jogador *jogador)
+{
+    return jogador->quantidadeDePecas == 0;
 }
