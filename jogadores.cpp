@@ -5,7 +5,7 @@
 struct Jogador
 {
     string nome;
-    Peca *maoJogador;
+    Peca *maoJogador = nullptr;
     int quantidadeDePecas = 7;
     Peca pecaEscolhida;
 };
@@ -14,6 +14,10 @@ Jogador jogador1;
 Jogador jogador2;
 Jogador jogador3;
 Jogador jogador4;
+
+Peca *pecas = nullptr;
+Montante montante;
+Mesa mesa = criarMesa();
 
 int verificarJogadores(int numJogadores)
 {
@@ -32,10 +36,6 @@ int verificarJogadores(int numJogadores)
     return numJogadores;
 }
 
-Peca *pecas = criarPecas();
-Montante montante = criarMontante(pecas);
-Mesa mesa = criarMesa();
-
 Peca *montarMaoJogador(int numJogador, Jogador &jogador)
 {
     jogador.quantidadeDePecas = PECASPORMAO;
@@ -50,6 +50,47 @@ Peca *montarMaoJogador(int numJogador, Jogador &jogador)
     }
 
     return maoJogador;
+}
+
+void liberarMaoJogador(Jogador &jogador)
+{
+    delete[] jogador.maoJogador;
+    jogador.maoJogador = nullptr;
+    jogador.quantidadeDePecas = 0;
+}
+
+void liberarRecursosPartida()
+{
+    liberarMaoJogador(jogador1);
+    liberarMaoJogador(jogador2);
+    liberarMaoJogador(jogador3);
+    liberarMaoJogador(jogador4);
+
+    liberarMesa(mesa);
+    liberarMontante(montante);
+
+    delete[] pecas;
+    pecas = nullptr;
+}
+
+void reiniciarPartida(int numJogadores)
+{
+
+    liberarRecursosPartida();
+
+    pecas = criarPecas();
+    montante = criarMontante(pecas);
+    mesa = criarMesa();
+
+    if (numJogadores == 4)
+    {
+        montante.quantidade = 0;
+    }
+
+    jogador1.maoJogador = montarMaoJogador(1, jogador1);
+    jogador2.maoJogador = montarMaoJogador(2, jogador2);
+    jogador3.maoJogador = montarMaoJogador(3, jogador3);
+    jogador4.maoJogador = montarMaoJogador(4, jogador4);
 }
 
 Jogador &verificarMaiorMao(Jogador &jogador1, Jogador &jogador2)
@@ -95,12 +136,8 @@ Jogador &verificarQuemComeca(int numJogadores, Jogador &jogador1, Jogador &jogad
             }
         }
     }
-    else if (numJogadores == 2)
-    {
-        return verificarMaiorMao(jogador1, jogador2);
-    }
 
-    return jogador1;
+    return verificarMaiorMao(jogador1, jogador2);
 }
 
 string nomearJogador(int numeroJogador)
@@ -212,7 +249,7 @@ Jogador *verificarVencedorPorSoma(int numJogadores)
 {
     Jogador *jogadores[4] = {&jogador1, &jogador2, &jogador3, &jogador4};
     int quantidadeJogadores = numJogadores == 4 ? 4 : 2;
-    int maiorSoma = -1;
+    int maiorSoma = 0;
     Jogador *vencedor = nullptr;
     bool houveEmpate = false;
 

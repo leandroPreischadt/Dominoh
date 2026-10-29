@@ -72,6 +72,29 @@ Mesa criarMesa()
     return mesa;
 }
 
+void liberarMesa(Mesa &mesa)
+{
+    Peca *atual = mesa.inicio;
+
+    while (atual != nullptr)
+    {
+        Peca *proxima = atual->prox;
+        delete atual;
+        atual = proxima;
+    }
+
+    mesa.inicio = nullptr;
+}
+
+void liberarMontante(Montante &montante)
+{
+    delete[] montante.pecas;
+    montante.pecas = nullptr;
+    montante.quantidade = 0;
+    montante.indiceAtual = 0;
+    montante.foiComprada = false;
+}
+
 Peca *criarPeca(Peca pecaDaMao)
 {
     Peca *peca = new Peca;
@@ -83,7 +106,14 @@ Peca *criarPeca(Peca pecaDaMao)
 
 void inverterPeca(Peca &peca)
 {
-    swap(peca.lado1, peca.lado2);
+    Peca salvo;
+
+    salvo.lado1 = peca.lado1;
+    salvo.lado2 = peca.lado2;
+
+    peca.lado1 = salvo.lado2;
+    peca.lado2 = salvo.lado1;
+
 }
 
 void inseriInicio(Peca pecaDaMao, Mesa &mesa)
@@ -93,44 +123,80 @@ void inseriInicio(Peca pecaDaMao, Mesa &mesa)
     mesa.inicio = peca;
 }
 
-bool podeInserirNaMesa(const Peca &peca, const Mesa &mesa)
+bool podeInserirNoInicio(const Peca &peca, const Mesa &mesa)
 {
     if (mesa.inicio == nullptr)
     {
         return true;
     }
 
-    Peca *atual = mesa.inicio;
-    while (atual->prox != nullptr)
+    return peca.lado1 == mesa.inicio->lado1 || peca.lado2 == mesa.inicio->lado1;
+}
+
+bool podeInserirNoFim(const Peca &peca, const Mesa &mesa)
+{
+    if (mesa.inicio == nullptr)
     {
-        atual = atual->prox;
+        return true;
     }
 
-    return peca.lado1 == mesa.inicio->lado1 || peca.lado2 == mesa.inicio->lado1 || peca.lado1 == atual->lado2 || peca.lado2 == atual->lado2;
+    Peca *fim = mesa.inicio;
+    while (fim->prox != nullptr)
+    {
+        fim = fim->prox;
+    }
+
+    return peca.lado1 == fim->lado2 || peca.lado2 == fim->lado2;
+}
+
+bool podeInserirNaMesa(const Peca &peca, const Mesa &mesa)
+{
+    return podeInserirNoInicio(peca, mesa) || podeInserirNoFim(peca, mesa);
 }
 
 bool InserirNaMesa(Mesa &mesa, Peca pecaDaMao)
 {
-    if (!podeInserirNaMesa(pecaDaMao, mesa))
-    {
-        return false;
-    }
-
     if (mesa.inicio == nullptr)
     {
         mesa.inicio = criarPeca(pecaDaMao);
         return true;
     }
 
-    if (pecaDaMao.lado2 == mesa.inicio->lado1)
+    bool podeInicio = podeInserirNoInicio(pecaDaMao, mesa);
+    bool podeFim = podeInserirNoFim(pecaDaMao, mesa);
+
+    if (!podeInicio && !podeFim)
     {
-        inseriInicio(pecaDaMao, mesa);
-        return true;
+        return false;
     }
 
-    if (pecaDaMao.lado1 == mesa.inicio->lado1)
+    bool inserirNoInicio = podeInicio;
+
+    if (podeInicio && podeFim)
     {
-        inverterPeca(pecaDaMao);
+        int escolha;
+        do
+        {
+            cout << "A peça pode ser inserida nos dois extremos." << endl;
+            cout << "(1) Inserir no início  (2) Inserir no fim: ";
+            cin >> escolha;
+
+            if (escolha != 1 && escolha != 2)
+            {
+                cout << "Escolha inválida!" << endl;
+            }
+        } while (escolha != 1 && escolha != 2);
+
+        inserirNoInicio = escolha == 1;
+    }
+
+    if (inserirNoInicio)
+    {
+        if (pecaDaMao.lado1 == mesa.inicio->lado1)
+        {
+            inverterPeca(pecaDaMao);
+        }
+
         inseriInicio(pecaDaMao, mesa);
         return true;
     }
@@ -141,20 +207,13 @@ bool InserirNaMesa(Mesa &mesa, Peca pecaDaMao)
         atual = atual->prox;
     }
 
-    if (pecaDaMao.lado1 == atual->lado2)
-    {
-        atual->prox = criarPeca(pecaDaMao);
-        return true;
-    }
-
     if (pecaDaMao.lado2 == atual->lado2)
     {
         inverterPeca(pecaDaMao);
-        atual->prox = criarPeca(pecaDaMao);
-        return true;
     }
 
-    return false;
+    atual->prox = criarPeca(pecaDaMao);
+    return true;
 }
 
 void exibirMesa(const Mesa &mesa)
