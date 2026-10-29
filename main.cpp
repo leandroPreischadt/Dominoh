@@ -45,6 +45,7 @@ int main()
 
     Peca maoJogadorDaVez;
     Jogador *jogadorDaVez = &jogadorQueComeca;
+    Mesa mesa = criarMesa();
 
     while (true)
     {
@@ -52,6 +53,11 @@ int main()
         cout << "Jogador da vez: " <<jogadorDaVez->nome << endl;
 
         maoJogadorDaVez = escolherPecaMao(*jogadorDaVez, jogadorDaVez->quantidadeDePecas);
+
+        InserirNaMesa(mesa, maoJogadorDaVez);
+        cout << "mesa:";
+        exibirMesa(mesa);
+        cout << endl;
 
         if (jogadorDaVez == &jogador1 && numJogadores >= 2)
         {
